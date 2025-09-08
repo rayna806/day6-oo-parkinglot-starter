@@ -231,4 +231,20 @@ public class ParkingLotTest {
         // 恢复标准输出
         System.setOut(System.out);
     }
+    //Given a parking lot, a standard parking boy, and a used parking ticket, When fetch the car,
+    //Then return nothing with error message "Unrecognized parking ticket."
+    @Test
+    public void should_return_null_when_standard_parking_boy_fetch_a_car_with_used_ticket(){
+
+        ParkingLot parkingLot = new ParkingLot();
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLot);
+        Car car = new Car("park number 1");
+        Ticket ticket = standardParkingBoy.park(car);
+
+
+        Car fetchedCar = standardParkingBoy.fetch(ticket);
+
+
+        assertNull(standardParkingBoy.fetch(ticket));
+    }
 }
