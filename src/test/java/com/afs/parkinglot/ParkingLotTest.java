@@ -234,17 +234,52 @@ public class ParkingLotTest {
     //Given a parking lot, a standard parking boy, and a used parking ticket, When fetch the car,
     //Then return nothing with error message "Unrecognized parking ticket."
     @Test
-    public void should_return_null_when_standard_parking_boy_fetch_a_car_with_used_ticket(){
-
+    public void should_give_message_when_standard_parking_boy_fetch_a_car_with_used_ticket(){
+        //Given
         ParkingLot parkingLot = new ParkingLot();
         StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLot);
         Car car = new Car("park number 1");
         Ticket ticket = standardParkingBoy.park(car);
+        Car fetchedCar = standardParkingBoy.fetch(ticket); // 第一次取车，票据变为已使用
 
+        //When
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
 
-        Car fetchedCar = standardParkingBoy.fetch(ticket);
+        Car secondFetchCar = standardParkingBoy.fetch(ticket); // 第二次使用同一张票据
 
+        //Then
+        assertNull(secondFetchCar);
+        assertTrue(outputStream.toString().contains("Unrecognized parking ticket"));
 
-        assertNull(standardParkingBoy.fetch(ticket));
+        // 恢复标准输出
+        System.setOut(System.out);
+    }
+    //Given a parking lot without any position, a standard parking boy, and a car, When park the
+    //car, Then return nothing with error message "No available position."
+    @Test
+    public void should_give_message_when_standard_parking_boy_park_car_with_no_position(){
+        //Given
+        ParkingLot parkingLot = new ParkingLot();
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLot);
+        // 先填满所有停车位
+        for(int i = 0; i < 10; i++) {
+            Car car = new Car("car " + i);
+            standardParkingBoy.park(car);
+        }
+
+        //When
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        Car car = new Car("park number 11");
+        Ticket ticketResult = standardParkingBoy.park(car);
+
+        //Then
+        assertNull(ticketResult);
+        assertTrue(outputStream.toString().contains("No available position"));
+
+        // 恢复标准输出
+        System.setOut(System.out);
     }
 }
