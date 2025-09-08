@@ -360,5 +360,30 @@ public class ParkingLotTest {
         assertEquals(car2, fetchedCar2);
     }
     //Given a standard parking boy, who manage two parking lots, and an unrecognized ticket,
-    //When fetch the car, Then return nothing with error message "Unrecognized parking ticket.
+    //When fetch the car, Then return nothing with error message "Unrecognized parking ticket."
+    @Test
+    public void should_give_message_when_standard_parking_boy_manage_two_parking_lots_with_unrecognized_ticket(){
+        //Given
+        ParkingLot firstParkingLot = new ParkingLot();
+        ParkingLot secondParkingLot = new ParkingLot();
+        List<ParkingLot> parkingLots = Arrays.asList(firstParkingLot, secondParkingLot);
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLots);
+
+        Car car = new Car("park number 1");
+        Ticket validTicket = standardParkingBoy.park(car);
+        Ticket unrecognizedTicket = new Ticket(new Car("unrecognized car"), 99, firstParkingLot);
+
+        //When
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        Car fetchedCar = standardParkingBoy.fetch(unrecognizedTicket);
+
+        //Then
+        assertNull(fetchedCar);
+        assertTrue(outputStream.toString().contains("Unrecognized parking ticket"));
+
+        // 恢复标准输出
+        System.setOut(System.out);
+    }
 }
