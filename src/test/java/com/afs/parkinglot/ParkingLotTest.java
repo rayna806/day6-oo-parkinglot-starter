@@ -304,4 +304,32 @@ public class ParkingLotTest {
         assertEquals(firstParkingLot, ticket.parkingLot());
         assertEquals(1, ticket.position());
     }
+    //Given a standard parking boy, who manage two parking lots, first is full and second with
+    //available position, and a car, When park the car, Then the car will be parked to the second parking
+    //lot
+    @Test
+    public void should_park_car_to_second_parking_lot_when_first_parking_lot_is_full(){
+        //Given
+        ParkingLot firstParkingLot = new ParkingLot();
+        ParkingLot secondParkingLot = new ParkingLot();
+        List<ParkingLot> parkingLots = Arrays.asList(firstParkingLot, secondParkingLot);
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLots);
+
+        // 填满第一个停车场
+        for(int i = 0; i < 10; i++) {
+            Car car = new Car("car " + i);
+            standardParkingBoy.park(car);
+        }
+
+        Car car = new Car("park number 11");
+
+        //When
+        Ticket ticket = standardParkingBoy.park(car);
+
+        //Then
+        assertNotNull(ticket);
+        assertEquals(car, ticket.car());
+        assertEquals(secondParkingLot, ticket.parkingLot());
+        assertEquals(1, ticket.position());
+    }
 }
