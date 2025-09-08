@@ -414,5 +414,39 @@ public class ParkingLotTest {
         System.setOut(System.out);
     }
     //Given a standard parking boy, who manage two parking lots, both without any position,
-    //and a car, When park the car, Then return nothing with error message "No available position
+    //and a car, When park the car, Then return nothing with error message "No available position."
+    @Test
+    public void should_give_message_when_standard_parking_boy_manage_two_parking_lots_both_without_position(){
+        //Given
+        ParkingLot firstParkingLot = new ParkingLot();
+        ParkingLot secondParkingLot = new ParkingLot();
+        List<ParkingLot> parkingLots = Arrays.asList(firstParkingLot, secondParkingLot);
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLots);
+
+        // 填满第一个停车场
+        for(int i = 0; i < 10; i++) {
+            Car car = new Car("car " + i);
+            standardParkingBoy.park(car);
+        }
+
+        // 填满第二个停车场
+        for(int i = 0; i < 10; i++) {
+            Car car = new Car("car2 " + i);
+            standardParkingBoy.park(car);
+        }
+
+        //When
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        Car car = new Car("park number 21");
+        Ticket ticketResult = standardParkingBoy.park(car);
+
+        //Then
+        assertNull(ticketResult);
+        assertTrue(outputStream.toString().contains("No available position"));
+
+        // 恢复标准输出
+        System.setOut(System.out);
+    }
 }
