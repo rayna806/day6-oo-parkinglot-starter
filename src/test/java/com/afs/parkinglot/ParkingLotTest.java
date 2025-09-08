@@ -149,4 +149,40 @@ public class ParkingLotTest {
         // 恢复标准输出
         System.setOut(System.out);
     }
+
+    //story 3
+    //Given a parking lot, a standard parking boy, and a car, When park the car, Then return a
+    //parking ticket.
+    @Test
+    public void should_return_parking_ticket_when_standard_parking_boy_park_a_car(){
+        //Given
+        ParkingLot parkingLot = new ParkingLot();
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLot);
+        Car car = new Car("park number 1");
+
+        //When
+        Ticket ticket = standardParkingBoy.park(car);
+
+        //Then
+        assertNotNull(ticket);
+        assertEquals(car, ticket.car());
+        assertEquals(parkingLot, ticket.parkingLot());
+    }
+    //Given a parking lot with a parked car, a standard parking boy, and a parking ticket, When
+    //fetch the car, Then return the parked car.
+    @Test
+    public void should_return_car_when_standard_parking_boy_fetch_a_car(){
+        //Given
+        ParkingLot parkingLot = new ParkingLot();
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLot);
+        Car car = new Car("park number 1");
+        Ticket ticket = standardParkingBoy.park(car);
+
+        //When
+        Car fetchedCar = standardParkingBoy.fetch(ticket);
+
+        //Then
+        assertNotNull(fetchedCar);
+        assertEquals(car, fetchedCar);
+    }
 }
