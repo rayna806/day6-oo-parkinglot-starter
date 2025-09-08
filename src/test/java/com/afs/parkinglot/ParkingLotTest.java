@@ -185,4 +185,26 @@ public class ParkingLotTest {
         assertNotNull(fetchedCar);
         assertEquals(car, fetchedCar);
     }
+    // Given a parking lot with two parked cars, a standard parking boy, and two parking tickets,
+    //When fetch the car twice, Then return the right car with each ticket
+    @Test
+    public void should_return_right_car_when_standard_parking_boy_fetch_cars_with_tickets(){
+        //Given
+        ParkingLot parkingLot = new ParkingLot();
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLot);
+        Car car1 = new Car("park number 1");
+        Car car2 = new Car("park number 2");
+        Ticket ticket1 = standardParkingBoy.park(car1);
+        Ticket ticket2 = standardParkingBoy.park(car2);
+
+        //When
+        Car fetchedCar1 = standardParkingBoy.fetch(ticket1);
+        Car fetchedCar2 = standardParkingBoy.fetch(ticket2);
+
+        //Then
+        assertNotNull(fetchedCar1);
+        assertNotNull(fetchedCar2);
+        assertEquals(car1, fetchedCar1);
+        assertEquals(car2, fetchedCar2);
+    }
 }
