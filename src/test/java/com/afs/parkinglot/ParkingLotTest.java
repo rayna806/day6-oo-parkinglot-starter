@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -281,5 +283,25 @@ public class ParkingLotTest {
 
         // 恢复标准输出
         System.setOut(System.out);
+    }
+    //Given a standard parking boy, who manage two parking lots, both with available position,
+    //and a car, When park the car, Then the car will be parked to the first parking lot
+    @Test
+    public void should_park_car_to_first_parking_lot_when_standard_parking_boy_manage_two_parking_lots(){
+        //Given
+        ParkingLot firstParkingLot = new ParkingLot();
+        ParkingLot secondParkingLot = new ParkingLot();
+        List<ParkingLot> parkingLots = Arrays.asList(firstParkingLot, secondParkingLot);
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLots);
+        Car car = new Car("park number 1");
+
+        //When
+        Ticket ticket = standardParkingBoy.park(car);
+
+        //Then
+        assertNotNull(ticket);
+        assertEquals(car, ticket.car());
+        assertEquals(firstParkingLot, ticket.parkingLot());
+        assertEquals(1, ticket.position());
     }
 }
