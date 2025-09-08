@@ -413,4 +413,6 @@ public class ParkingLotTest {
         // 恢复标准输出
         System.setOut(System.out);
     }
+    //Given a standard parking boy, who manage two parking lots, both without any position,
+    //and a car, When park the car, Then return nothing with error message "No available position
 }
