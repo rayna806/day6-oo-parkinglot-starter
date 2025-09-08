@@ -386,4 +386,31 @@ public class ParkingLotTest {
         // 恢复标准输出
         System.setOut(System.out);
     }
+    //- Given a standard parking boy, who manage two parking lots, and a used ticket, When
+    //fetch the car, Then return nothing with error message "Unrecognized parking ticket.
+    @Test
+    public void should_give_message_when_standard_parking_boy_manage_two_parking_lots_with_used_ticket(){
+        //Given
+        ParkingLot firstParkingLot = new ParkingLot();
+        ParkingLot secondParkingLot = new ParkingLot();
+        List<ParkingLot> parkingLots = Arrays.asList(firstParkingLot, secondParkingLot);
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLots);
+
+        Car car = new Car("park number 1");
+        Ticket ticket = standardParkingBoy.park(car);
+        Car fetchedCar = standardParkingBoy.fetch(ticket); // 第一次取车，票据变为已使用
+
+        //When
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        Car secondFetchCar = standardParkingBoy.fetch(ticket); // 第二次使用同一张票据
+
+        //Then
+        assertNull(secondFetchCar);
+        assertTrue(outputStream.toString().contains("Unrecognized parking ticket"));
+
+        // 恢复标准输出
+        System.setOut(System.out);
+    }
 }
