@@ -332,4 +332,33 @@ public class ParkingLotTest {
         assertEquals(secondParkingLot, ticket.parkingLot());
         assertEquals(1, ticket.position());
     }
+    //Given a standard parking boy, who manage two parking lots, both with a parked car, and
+    //two parking ticket, When fetch the car twice, Then return the right car with each ticket
+    @Test
+    public void should_return_right_car_when_standard_parking_boy_manage_two_parking_lots_with_parked_cars(){
+        //Given
+        ParkingLot firstParkingLot = new ParkingLot();
+        ParkingLot secondParkingLot = new ParkingLot();
+        List<ParkingLot> parkingLots = Arrays.asList(firstParkingLot, secondParkingLot);
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLots);
+
+        Car car1 = new Car("park number 1");
+        Car car2 = new Car("park number 2");
+
+        // 停放两辆车，car1会停在第一个停车场，car2也会停在第一个停车场
+        Ticket ticket1 = standardParkingBoy.park(car1);
+        Ticket ticket2 = standardParkingBoy.park(car2);
+
+        //When
+        Car fetchedCar1 = standardParkingBoy.fetch(ticket1);
+        Car fetchedCar2 = standardParkingBoy.fetch(ticket2);
+
+        //Then
+        assertNotNull(fetchedCar1);
+        assertNotNull(fetchedCar2);
+        assertEquals(car1, fetchedCar1);
+        assertEquals(car2, fetchedCar2);
+    }
+    //Given a standard parking boy, who manage two parking lots, and an unrecognized ticket,
+    //When fetch the car, Then return nothing with error message "Unrecognized parking ticket.
 }
